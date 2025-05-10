@@ -1,4 +1,4 @@
-# todo: more shop stuffs
+# todo: add roll cooldown cap, change the way to stop auto roll, add safeguard for invalid inputs
 import random       # essential for the rolling system
 import time         # used for stuff like auto rolling
 import math         # only use is the trophy multi
@@ -10,6 +10,133 @@ def back():     # here is the back function, basically just clears the screen
     print("Welcome to the python RNG. Roll for rarities!")
     print("Type cmds for commands.")
     print("\n" * 13)
+
+def showinv():
+    print("\n" * 103)
+    print("Inventory:")
+    print("Common:", rt1)
+    print(Fore.GREEN + "Uncommon: " + str(rt2) + Style.RESET_ALL)
+    print(Fore.BLUE + "Rare: " + str(rt3) + Style.RESET_ALL)
+    print(Fore.MAGENTA + "Epic: " + str(rt4) + Style.RESET_ALL)
+    print(Fore.YELLOW + "Legendary: " + str(rt5) + Style.RESET_ALL)
+    print(Style.BRIGHT + Fore.RED + "Mythic: " + str(rt6) + Style.RESET_ALL)
+    print(Style.BRIGHT + Fore.CYAN + "Exotic: " + str(rt7) + Style.RESET_ALL)
+    print(Style.BRIGHT + Fore.YELLOW + "Godly: " + str(rt8) + Style.RESET_ALL)
+    print(Style.BRIGHT + Fore.BLACK + "Supreme: " + str(rt9) + Style.RESET_ALL)
+    print("")
+    print(Style.BRIGHT + Fore.GREEN + "Money: " + str(rt10) + Style.RESET_ALL)
+    print(f"{Style.BRIGHT}{Fore.LIGHTYELLOW_EX}Trophies: {rt11} ({tromult}x money){Style.RESET_ALL}")
+    print(f"{Style.BRIGHT}{Fore.LIGHTGREEN_EX}Clovers: {rt12}{Style.RESET_ALL}")  # learned to use f strings for this shit
+    print("\n")
+
+def rarroll(rar, rtn, rtm, rarid):     # This is so much better than that duplicated block in the previous version
+    global failsafe, rlf  # Also i finally learned how to use functions probably with returning and allat
+    if rt12 == 0:
+        rarid = 1
+    else:
+        if rarid == "rarid1":
+            rarid = 1 / rt12
+        elif rarid == "rarid2":
+            rarid = 1 / (0.5 * rt12)
+        elif rarid == "rarid3":
+            rarid = 1 / (0.2 * rt12)
+        elif rarid == "rarid4":
+            rarid = 1 / (0.1 * rt12)
+        elif rarid == "rarid5":
+            rarid = 1 / (0.02 * rt12)
+        elif rarid == "rarid6":
+            rarid = 1 * (0.1 * rt12)
+        elif rarid == "rarid7":
+            rarid = 1 * (0.5 * rt12)
+        elif rarid == "rarid8":
+            rarid = 1 * rt12
+        elif rarid == "rarid9":
+            rarid = 1 * (rt12 * 5)
+    value = random.randint(1, 1000000000)
+    if value <= rar * rarid:
+        rtn = rtn + 1
+        print(rtm)
+        if not auto1:
+            print("\n" * 14)
+            failsafe = 1
+        else:
+            rlf = rlf - 1
+            time.sleep(cd)
+    return rtn
+
+def rarsell(rtn, rtl, idd):      # This is so scuffed but it works and i have no idea how to revamp it better, so it'll stay like this for a while
+    global rt1, rt2, rt3, rt4, rt5, rt6, rt7, rt8, rt9, rt10, selling, failsafe1, tromult
+    if idd == "id1":
+        mrt = 1
+    elif idd == "id2":
+        mrt = 6
+    elif idd == "id3":
+        mrt = 32
+    elif idd == "id4":
+        mrt = 375
+    elif idd == "id5":
+        mrt = 2000
+    elif idd == "id6":
+        mrt = 125000
+    elif idd == "id7":
+        mrt = 8000000
+    elif idd == "id8":
+        mrt = 640000000
+    elif idd == "id9":
+        mrt = 10000000000
+    if rtn > 0:
+        print("\n" * 102)
+        print("How many of it? You have", rtn, rtl + "s.")
+        print("\n" * 14)
+        amount = int(input())
+        if amount <= rtn:
+            print("\n" * 102)
+            print("Are you sure you want to sell", amount, rtl + "s for", amount * mrt * tromult, "money? Y/N")
+            print("\n" * 14)
+            failsafe1 = 2
+            while failsafe1 == 2:
+                answer1 = input()
+                if answer1.lower() == "y":
+                    rtn = rtn - amount
+                    if idd == "id1":
+                        rt10 = rt10 + amount * tromult
+                        rt1 = rt1 - amount
+                    elif idd == "id2":
+                        rt10 = rt10 + amount * 6 * tromult
+                        rt2 = rt2 - amount
+                    elif idd == "id3":
+                        rt10 = rt10 + amount * 32 * tromult
+                        rt3 = rt3 - amount
+                    elif idd == "id4":
+                        rt10 = rt10 + amount * 375 * tromult
+                        rt4 = rt4 - amount
+                    elif idd == "id5":
+                        rt10 = rt10 + amount * 2000 * tromult
+                        rt5 = rt5 - amount
+                    elif idd == "id6":
+                        rt10 = rt10 + amount * 125000 * tromult
+                        rt6 = rt6 - amount
+                    elif idd == "id7":
+                        rt10 = rt10 + amount * 8000000 * tromult
+                        rt7 = rt7 - amount
+                    elif idd == "id8":
+                        rt10 = rt10 + amount * 640000000 * tromult
+                        rt8 = rt8 - amount
+                    elif idd == "id9":
+                        rt10 = rt10 + amount * 10000000000 * tromult
+                        rt9 = rt9 - amount
+                    back()
+                    failsafe1 = 1
+                elif answer1 == "n" or answer1 == "N":
+                    back()
+                    failsafe1 = 1
+                else:
+                    print("Invalid answer.")
+                    failsafe1 = 2
+        else:
+            print("You don't have that many", rtl + "s.")
+    else:
+        print("You do not have any", rtl + "s.")
 
 
 auto1 = False       # variable storage, i think this isn't needed but just keeping it to be safe
@@ -25,6 +152,34 @@ rt9 = 0
 rt10 = 0
 rt11 = 0
 rt12 = 0
+rar1 = 500000000
+rar2 = 125000000
+rar3 = 31250000
+rar4 = 4000000
+rar5 = 1000000
+rar6 = 25000
+rar7 = 625
+rar8 = 13
+rar9 = 1
+tromult = math.ceil((0.5 * rt11) + 1)
+rtm1 = "You got: Common (1 in 2)"
+rtm2 = Fore.GREEN + "You got: Uncommon (1 in 8)" + Style.RESET_ALL
+rtm3 = Fore.BLUE + "You got: Rare (1 in 32)" + Style.RESET_ALL
+rtm4 = Fore.MAGENTA + "You got: Epic (1 in 250)" + Style.RESET_ALL
+rtm5 = Fore.YELLOW + "You got: Legendary (1 in 1,000)" + Style.RESET_ALL
+rtm6 = Style.BRIGHT + Fore.RED + "You got: Mythic (1 in 40,000)" + Style.RESET_ALL
+rtm7 = Style.BRIGHT + Fore.CYAN + "You got: Exotic (1 in 1,600,000)" + Style.RESET_ALL
+rtm8 = Style.BRIGHT + Fore.YELLOW + "You got: Godly (1 in 80,000,000)" + Style.RESET_ALL
+rtm9 = Style.BRIGHT + Fore.BLACK + "You got: Supreme (1 in 1,000,000,000)" + Style.RESET_ALL
+rtl1 = "common"
+rtl2 = "uncommon"
+rtl3 = "rare"
+rtl4 = "epic"
+rtl5 = "legendary"
+rtl6 = "mythic"
+rtl7 = "exotic"
+rtl8 = "godly"
+rtl9 = "supreme"
 
 print("Welcome to the python RNG. Roll for rarities!")
 print("Type cmds for commands.")
@@ -43,22 +198,7 @@ while True:
     elif usr == "back":
         back()
     elif usr == "inv":
-        print("\n" * 103)
-        print("Inventory:")
-        print("Common:", rt1)
-        print(Fore.GREEN + "Uncommon: " + str(rt2) + Style.RESET_ALL)
-        print(Fore.BLUE + "Rare: " + str(rt3) + Style.RESET_ALL)
-        print(Fore.MAGENTA + "Epic: " + str(rt4) + Style.RESET_ALL)
-        print(Fore.YELLOW + "Legendary: " + str(rt5) + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.RED + "Mythic: " + str(rt6) + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.CYAN + "Exotic: " + str(rt7) + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.YELLOW + "Godly: " + str(rt8) + Style.RESET_ALL)
-        print(Style.BRIGHT + Fore.BLACK + "Supreme: " + str(rt9) + Style.RESET_ALL)
-        print("")
-        print(Style.BRIGHT + Fore.GREEN + "Money: " + str(rt10) + Style.RESET_ALL)
-        print(f"{Style.BRIGHT}{Fore.LIGHTYELLOW_EX}Trophies: {rt11} ({math.floor(((0.5 * rt11) + 1))}x money){Style.RESET_ALL}")
-        print(f"{Style.BRIGHT}{Fore.LIGHTGREEN_EX}Clovers: {rt12} (+{math.floor((0.5 * rt12))} luck){Style.RESET_ALL}")  # learned to use f strings for this shit
-        print("\n")
+        showinv()
     elif usr == "roll" or usr == "auto":        # the glorious... gambling system?
         if usr == "auto":
             auto1 = True
@@ -77,356 +217,40 @@ while True:
             if auto1:
                 if rlf <= 1:
                     failsafe = 1
-            value = random.randint(1, 1000000000)       # tables are for losers, watch me make terrible code
-            if value <= 500000000:
-                rt1 = rt1 + 1
-                print("You got: Common (1 in 2)")
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-            elif 500000001 < value < 625000001:
-                rt2 = rt2 + 1
-                print(Fore.GREEN + "You got: Uncommon (1 in 8)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-            elif 625000001 < value < 656250001:
-                rt3 = rt3 + 1
-                print(Fore.BLUE + "You got: Rare (1 in 32)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-            elif 656250001 < value < 660250001:
-                rt4 = rt4 + 1
-                print(Fore.MAGENTA + "You got: Epic (1 in 250)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-            elif 660250001 < value < 661250001:
-                rt5 = rt5 + 1
-                print(Fore.YELLOW + "You got: Legendary (1 in 1,000)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-            elif 661250001 < value < 661275001:
-                rt6 = rt6 + 1
-                print(Style.BRIGHT + Fore.RED + "You got: Mythic (1 in 40,000)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-                    if cd > 0.01:
-                        time.sleep(1)
-            elif 661275001 < value < 661275626:
-                rt7 = rt7 + 1
-                print(Style.BRIGHT + Fore.CYAN + "You got: Exotic (1 in 1,600,000)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-                    if cd > 0.001:
-                        time.sleep(1)
-            elif 661275626 < value < 661275639:
-                rt8 = rt8 + 1
-                print(Style.BRIGHT + Fore.YELLOW + "You got: Godly (1 in 80,000,000)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-                    if cd > 0:
-                        time.sleep(1)
-            elif value == 1000000000:
-                rt9 = rt9 + 1
-                print(Style.BRIGHT + Fore.BLACK + "You got: Supreme (1 in 1,000,000,000)" + Style.RESET_ALL)
-                if not auto1:
-                    print("\n" * 14)
-                    failsafe = 1
-                else:
-                    rlf = rlf - 1
-                    time.sleep(cd)
-                    time.sleep(3)
-            else:
-                failsafe = 2
-    elif usr == "sell":         # probably the shittiest code ever made, should probably have used a function lmao
+            rt1 = rarroll(rar1, rt1, rtm1, "rarid1")
+            rt2 = rarroll(rar2, rt2, rtm2, "rarid2")
+            rt3 = rarroll(rar3, rt3, rtm3, "rarid3")
+            rt4 = rarroll(rar4, rt4, rtm4, "rarid4")
+            rt5 = rarroll(rar5, rt5, rtm5, "rarid5")
+            rt6 = rarroll(rar6, rt6, rtm6, "rarid6")
+            rt7 = rarroll(rar7, rt7, rtm7, "rarid7")
+            rt8 = rarroll(rar8, rt8, rtm8, "rarid8")
+            rt9 = rarroll(rar9, rt9, rtm9, "rarid9")
+    elif usr == "sell":         # code is still shit but at least its more optimized
         print("\n" * 102)
         print("Which rarity would you like to sell?")
         print("\n" * 14)
         selling = input()
-        if selling == "common" or selling == "Common":
-            if rt1 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt1, "commons.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt1:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "commons for", amount * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt1 = rt1 - amount
-                            rt10 = rt10 + amount * (0.5 * rt11) + 1
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many exotics.")
-            else:
-                print("You do not have any exotics.")
-        elif selling == "uncommon" or selling == "Uncommon":
-            if rt2 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt2, "uncommons.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt2:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "uncommons for", amount * 6 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt2 = rt2 - amount
-                            rt10 = rt10 + amount * 6 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many uncommons.")
-            else:
-                print("You do not have any uncommons.")
-        elif selling == "rare" or selling == "Rare":
-            if rt3 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt3, "rares.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt3:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "rares for", amount * 32 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt3 = rt3 - amount
-                            rt10 = rt10 + amount * 32 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many rares.")
-            else:
-                print("You do not have any rares.")
-        elif selling == "epic" or selling == "Epic":
-            if rt4 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt4, "epics.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt4:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "epics for", amount * 375 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt4 = rt4 - amount
-                            rt10 = rt10 + amount * 375 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many epics.")
-            else:
-                print("You do not have any epics.")
-        elif selling == "legendary" or selling == "Legendary":
-            if rt5 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt5, "legendaries.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt5:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "legendaries for", amount * 2000 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt5 = rt5 - amount
-                            rt10 = rt10 + amount * 2000 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many legendaries.")
-            else:
-                print("You do not have any legendaries.")
-        elif selling == "mythic" or selling == "Mythic":
-            if rt6 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt6, "mythics.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt6:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "mythics for", amount * 125000 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt6 = rt6 - amount
-                            rt10 = rt10 + amount * 125000 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many mythics.")
-            else:
-                print("You do not have any mythics.")
-        elif selling == "exotic" or selling == "Exotic":
-            if rt7 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt7, "exotics.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt7:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "exotics for", amount * 8000000 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt7 = rt7 - amount
-                            rt10 = rt10 + amount * 8000000 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many exotics.")
-            else:
-                print("You do not have any exotics.")
-        elif selling == "godly" or selling == "Godly":
-            if rt8 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt8, "godlies.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt8:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "godlies for", amount * 640000000 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt8 = rt8 - amount
-                            rt10 = rt10 + amount * 640000000 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many godlies.")
-            else:
-                print("You do not have any godlies.")
-        elif selling == "supreme" or selling == "Supreme":
-            if rt9 > 0:
-                print("\n" * 102)
-                print("How many of it? You have", rt9, "supremes.")
-                print("\n" * 14)
-                amount = int(input())
-                if amount <= rt9:
-                    print("\n" * 102)
-                    print("Are you sure you want to sell", amount, "supremes for", amount * 10000000000 * math.floor(((0.5 * rt11) + 1)), "money? Y/N")
-                    print("\n" * 14)
-                    failsafe1 = 2
-                    while failsafe1 == 2:
-                        answer = input()
-                        if answer == "Y" or answer == "y":
-                            rt9 = rt9 - amount
-                            rt10 = rt10 + amount * 10000000000 * math.floor(((0.5 * rt11) + 1))
-                            back()
-                            failsafe1 = 1
-                        elif answer == "n" or answer == "N":
-                            back()
-                            failsafe1 = 1
-                        else:
-                            print("Invalid answer.")
-                            failsafe1 = 2
-                else:
-                    print("You don't have that many supremes.")
-            else:
-                print("You do not have any supremes.")
+        if selling.lower() == "common":
+            rarsell(rt1, rtl1, "id1")
+        elif selling.lower() == "uncommon":
+            rarsell(rt2, rtl2, "id2")
+        elif selling.lower() == "rare":
+            rarsell(rt3, rtl3, "id3")
+        elif selling.lower() == "epic":
+            rarsell(rt4, rtl4, "id4")
+        elif selling.lower() == "legendary":
+            rarsell(rt5, rtl5, "id5")
+        elif selling.lower() == "mythic":
+            rarsell(rt6, rtl6, "id6")
+        elif selling.lower() == "exotic":
+            rarsell(rt7, rtl7, "id7")
+        elif selling.lower() == "godly":
+            rarsell(rt8, rtl8, "id8")
+        elif selling.lower() == "supreme":
+            rarsell(rt9, rtl9, "id9")
         elif selling == "all" or selling == "All":
-            amount1 = (rt1 + (rt2 * 6) + (rt3 * 32) + (rt4 * 375) + (rt5 * 2000) + (rt6 * 125000) + (rt7 * 8000000) + (rt8 * 640000000) + (rt9 * 10000000000)) * math.floor(((0.5 * rt11) + 1))
+            amount1 = (rt1 + (rt2 * 6) + (rt3 * 32) + (rt4 * 375) + (rt5 * 2000) + (rt6 * 125000) + (rt7 * 8000000) + (rt8 * 640000000) + (rt9 * 10000000000)) * tromult
             if amount1 > 0:
                 print("\n" * 102)
                 print("Are you sure you want to sell everything for", amount1, "money? Y/N")
@@ -462,6 +286,7 @@ while True:
     elif usr == "shop":
         print("\n" * 100)
         print("Would you like to buy trophies for more money or clovers for more luck?")
+        print("\n" * 14)
         choice = input()
         if choice == "trophies" or choice == "Trophies" or choice == "Trophy" or choice == "trophy":
             print("\n" * 100)
@@ -491,43 +316,17 @@ while True:
                     elif rt10 >= 10000:
                         rt10 = rt10 - 10000
                         rt11 = rt11 + 1
+                        tromult = math.ceil((0.5 * rt11) + 1)
                     else:
                         maxbuy = False
-                print("\n" * 103)
-                print("Inventory:")
-                print("Common:", rt1)
-                print(Fore.GREEN + "Uncommon: " + str(rt2) + Style.RESET_ALL)
-                print(Fore.BLUE + "Rare: " + str(rt3) + Style.RESET_ALL)
-                print(Fore.MAGENTA + "Epic: " + str(rt4) + Style.RESET_ALL)
-                print(Fore.YELLOW + "Legendary: " + str(rt5) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.RED + "Mythic: " + str(rt6) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.CYAN + "Exotic: " + str(rt7) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.YELLOW + "Godly: " + str(rt8) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.BLACK + "Supreme: " + str(rt9) + Style.RESET_ALL)
-                print("")
-                print(Style.BRIGHT + Fore.GREEN + "Money: " + str(rt10) + Style.RESET_ALL)
-                print(
-                    f"{Style.BRIGHT}{Fore.LIGHTYELLOW_EX}Trophies: {rt11} ({math.floor(((0.5 * rt11) + 1))}x money){Style.RESET_ALL}")
-                print("\n" * 2)
+                tromult = math.ceil((0.5 * rt11) + 1)
+                showinv()
             elif buying > 0:
                 if buying * 10000 <= rt10:
                     rt10 = rt10 - buying * 10000
                     rt11 = rt11 + buying
-                    print("\n" * 103)
-                    print("Inventory:")
-                    print("Common:", rt1)
-                    print(Fore.GREEN + "Uncommon: " + str(rt2) + Style.RESET_ALL)
-                    print(Fore.BLUE + "Rare: " + str(rt3) + Style.RESET_ALL)
-                    print(Fore.MAGENTA + "Epic: " + str(rt4) + Style.RESET_ALL)
-                    print(Fore.YELLOW + "Legendary: " + str(rt5) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.RED + "Mythic: " + str(rt6) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.CYAN + "Exotic: " + str(rt7) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.YELLOW + "Godly: " + str(rt8) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.BLACK + "Supreme: " + str(rt9) + Style.RESET_ALL)
-                    print("")
-                    print(Style.BRIGHT + Fore.GREEN + "Money: " + str(rt10) + Style.RESET_ALL)
-                    print(f"{Style.BRIGHT}{Fore.LIGHTYELLOW_EX}Trophies: {rt11} ({math.floor(((0.5 * rt11) + 1))}x money){Style.RESET_ALL}")
-                    print("\n" * 2)
+                    tromult = math.ceil((0.5 * rt11) + 1)
+                    showinv()
                 else:
                     back()
                     print("\n" * 100)
@@ -535,71 +334,29 @@ while True:
                     print("\n" * 14)
             else:
                 back()
-        elif choice == "clover" or choice == "Clover" or choice == "Clovers" or choice == "clovers":
+        elif choice == "clover" or choice == "Clover" or choice == "Clovers" or choice == "clovers":        # these fuckass clovers have made me tweak the fuck out so many times god help me why are they so hard to implement
+            expri = (rt12 + 1) * (rt12 + 1) * (rt12 + 1) * (rt12 + 1) * (rt12 + 1) * 1000
+            if expri < 1000:
+                expri = 1000
             print("\n" * 100)
-            print("How many clovers would you like to buy? Each costs 1000000 money. You have", rt10, "money")
-            print("Say -1 to buy max")
-            print("\n" * 13)
-            buying = int(input())
-            if buying == -1:
-                print("Loading...")
+            print("Would you like to buy one or buy max? Buying one costs", expri, "money. You have", rt10, "money")
+            print("\n" * 14)
+            buying = input()
+            if buying.lower() == "max":
                 maxbuy = True
                 while maxbuy:
-                    if rt10 >= 100000000000000:
-                        rt10 = rt10 - 100000000000000
-                        rt11 = rt11 + 10000000000
-                    elif rt10 >= 1000000000000:
-                        rt10 = rt10 - 1000000000000
-                        rt11 = rt11 + 100000000
-                    elif rt10 >= 10000000000:
-                        rt10 = rt10 - 10000000000
-                        rt11 = rt11 + 1000000
-                    elif rt10 >= 100000000:
-                        rt10 = rt10 - 100000000
-                        rt11 = rt11 + 10000
-                    elif rt10 >= 1000000:
-                        rt10 = rt10 - 1000000
-                        rt11 = rt11 + 100
-                    elif rt10 >= 10000:
-                        rt10 = rt10 - 10000
-                        rt11 = rt11 + 1
+                    if expri <= rt10:
+                        rt10 = rt10 - expri
+                        rt12 = rt12 + 1
+                        expri = (rt12 + 1) * (rt12 + 1) * (rt12 + 1) * (rt12 + 1) * (rt12 + 1) * 1000
                     else:
                         maxbuy = False
-                print("\n" * 103)
-                print("Inventory:")
-                print("Common:", rt1)
-                print(Fore.GREEN + "Uncommon: " + str(rt2) + Style.RESET_ALL)
-                print(Fore.BLUE + "Rare: " + str(rt3) + Style.RESET_ALL)
-                print(Fore.MAGENTA + "Epic: " + str(rt4) + Style.RESET_ALL)
-                print(Fore.YELLOW + "Legendary: " + str(rt5) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.RED + "Mythic: " + str(rt6) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.CYAN + "Exotic: " + str(rt7) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.YELLOW + "Godly: " + str(rt8) + Style.RESET_ALL)
-                print(Style.BRIGHT + Fore.BLACK + "Supreme: " + str(rt9) + Style.RESET_ALL)
-                print("")
-                print(Style.BRIGHT + Fore.GREEN + "Money: " + str(rt10) + Style.RESET_ALL)
-                print(
-                    f"{Style.BRIGHT}{Fore.LIGHTYELLOW_EX}Trophies: {rt11} ({math.floor(((0.5 * rt11) + 1))}x money){Style.RESET_ALL}")
-                print("\n" * 2)
-            elif buying > 0:
-                if buying * 10000 <= rt10:
-                    rt10 = rt10 - buying * 10000
-                    rt11 = rt11 + buying
-                    print("\n" * 103)
-                    print("Inventory:")
-                    print("Common:", rt1)
-                    print(Fore.GREEN + "Uncommon: " + str(rt2) + Style.RESET_ALL)
-                    print(Fore.BLUE + "Rare: " + str(rt3) + Style.RESET_ALL)
-                    print(Fore.MAGENTA + "Epic: " + str(rt4) + Style.RESET_ALL)
-                    print(Fore.YELLOW + "Legendary: " + str(rt5) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.RED + "Mythic: " + str(rt6) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.CYAN + "Exotic: " + str(rt7) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.YELLOW + "Godly: " + str(rt8) + Style.RESET_ALL)
-                    print(Style.BRIGHT + Fore.BLACK + "Supreme: " + str(rt9) + Style.RESET_ALL)
-                    print("")
-                    print(Style.BRIGHT + Fore.GREEN + "Money: " + str(rt10) + Style.RESET_ALL)
-                    print(f"{Style.BRIGHT}{Fore.LIGHTYELLOW_EX}Trophies: {rt11} ({math.floor(((0.5 * rt11) + 1))}x money){Style.RESET_ALL}")
-                    print("\n" * 2)
+                showinv()
+            elif buying.lower == "one" or buying == "1":
+                if expri <= rt10:
+                    rt10 = rt10 - expri
+                    rt12 = rt12 + 1
+                    showinv()
                 else:
                     back()
                     print("\n" * 100)
